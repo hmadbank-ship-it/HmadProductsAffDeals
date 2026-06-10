@@ -1,203 +1,321 @@
-/* ====== الخط العام والألوان ====== */
+/* ====== متغيرات الألوان ====== */
 :root {
     --primary: #6366f1;
     --primary-dark: #4f46e5;
-    --accent: #f59e0b;
-    --dark: #1f2937;
-    --light: #f8fafc;
+    --primary-light: #a5b4fc;
+    --dark: #0f172a;
+    --gray-dark: #1e293b;
     --gray: #64748b;
+    --light: #f8fafc;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
 }
+
+/* خط Google Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 body {
-    padding-bottom: 50px;
-    font-family: 'Poppins', sans-serif;
-    background: #f5f7fa;
-    color: var(--dark);
-    scroll-behavior: smooth;
+    font-family: 'Poppins', 'Tajawal', sans-serif;
+    margin: 0;
+    padding-top: 70px; /* عشان النافبار الثابت */
+    background: var(--light);
 }
 
-/* ====== الكروت ====== */
-.card {
-    border: none;
-    border-radius: 16px;
-    overflow: hidden;
-    background: #fff;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.15);
-}
-
-.card-img-top {
-    object-fit: cover;
-    height: 220px;
-    transition: transform 0.4s ease;
-}
-
-.card:hover .card-img-top {
-    transform: scale(1.05);
-}
-
-.card-title {
-    font-weight: 600;
-    color: var(--dark);
-    font-size: 1.1rem;
-}
-
-.card-text {
-    color: var(--gray);
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-/* ====== الأزرار ====== */
-.btn {
-    border-radius: 12px;
-    font-weight: 500;
-    padding: 10px 24px;
-    transition: all 0.3s ease;
-    border: none;
-}
-
-.btn-modern {
-    border-radius: 12px;
-    padding: 8px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btn-primary, .btn-gradient {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    border: none;
-    color: white;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
-}
-
-.btn-primary:hover, .btn-gradient:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-}
-
-.btn-outline-primary {
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    background: transparent;
-}
-
-.btn-outline-primary:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-}
-
-.btn-success {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
-}
-
-.btn-success:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
-}
-
-/* ====== الهيرو سكشن ====== */
-.hero-section {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-section::before {
-    content: '';
-    position: absolute;
+/* ====== HEADER - NAVBAR ====== */
+.navbar {
+    position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%);
-    pointer-events: none;
+    width: 100%;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    box-shadow: var(--shadow);
+    padding: 0.7rem 0;
+    transition: all 0.3s ease;
 }
 
-/* ====== النافبار ====== */
-.navbar {
-    backdrop-filter: blur(12px);
-    background: rgba(255,255,255,0.8) !important;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+.navbar.scrolled {
+    padding: 0.5rem 0;
+    box-shadow: var(--shadow-hover);
+}
+
+.navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--dark) !important;
+    text-decoration: none;
     transition: transform 0.3s ease;
 }
 
 .navbar-brand:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
 }
 
-/* ====== الشارات والخصومات ====== */
-.badge {
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-weight: 600;
-    font-size: 0.75rem;
-}
-
-.badge.bg-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-}
-
-.badge.bg-warning {
-    background: linear-gradient(135deg, var(--accent) 0%, #d97706 100%) !important;
-    color: white !important;
-}
-
-/* ====== الفوتر ====== */
-.footer {
-    background: linear-gradient(180deg, var(--dark) 0%, #111827 100%);
-    border-top: 3px solid var(--primary);
-}
-
-/* ====== المدخلات والفلترة ====== */
-.form-control, .form-select {
-    border-radius: 12px;
-    border: 2px solid #e2e8f0;
-    padding: 12px 16px;
+/* مقاس الشعار موحد في كل الصفحات */
+.navbar-brand img {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
     transition: all 0.3s ease;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-    outline: none;
+/* أزرار النافبار */
+.navbar-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
-/* ====== الأنيميشن الخفيفة ====== */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-nav {
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.col-md-3, .col-md-4, .col-md-6 {
-    animation: fadeIn 0.5s ease backwards;
+.btn-nav-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
-.col-md-3:nth-child(2) { animation-delay: 0.1s; }
-.col-md-3:nth-child(3) { animation-delay: 0.2s; }
-.col-md-3:nth-child(4) { animation-delay: 0.3s; }
+.btn-nav-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+    color: var(--white);
+}
 
-/* ====== الاستجابة للموبايل ====== */
+.btn-nav-secondary {
+    background: transparent;
+    color: var(--gray-dark);
+    border: 1.5px solid #e2e8f0;
+}
+
+.btn-nav-secondary:hover {
+    background: #f1f5f9;
+    border-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+/* قائمة الموبايل */
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark);
+}
+
+/* ====== FOOTER ====== */
+.footer {
+    background: linear-gradient(180deg, var(--dark) 0%, var(--gray-dark) 100%);
+    color: #cbd5e1;
+    padding: 60px 0 25px;
+    margin-top: 100px;
+    border-top: 4px solid var(--primary);
+}
+
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+/* نفس مقاس شعار الهيدر */
+.footer-logo img {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+}
+
+.footer-desc {
+    color: #94a3b8;
+    line-height: 1.8;
+    font-size: 0.9rem;
+}
+
+.footer-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 18px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--primary-light);
+    transform: translateX(5px);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+/* ====== Responsive - جميع الأجهزة ====== */
+
+/* تابلت */
+@media (max-width: 992px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .navbar-brand img,
+    .footer-logo img {
+        height: 38px;
+    }
+    
+    .footer-grid {
+        gap: 30px;
+    }
+}
+
+/* موبايل كبير */
 @media (max-width: 768px) {
-    .card-img-top {
-        height: 180px;
+    body {
+        padding-top: 60px;
     }
-    .btn {
-        padding: 8px 16px;
-        font-size: 0.9rem;
+    
+    .navbar {
+        padding: 0.6rem 0;
     }
-    h2.fw-bold {
-        font-size: 1.5rem;
+    
+    .navbar-brand img,
+    .footer-logo img {
+        height: 35px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .navbar-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        flex-direction: column;
+        padding: 15px;
+        box-shadow: var(--shadow);
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .navbar-nav.active {
+        display: flex;
+    }
+    
+    .navbar-toggle {
+        display: block;
+    }
+    
+    .btn-nav {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .footer {
+        padding: 40px 0 20px;
+        margin-top: 60px;
+        text-align: center;
+    }
+    
+    .footer-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-logo {
+        justify-content: center;
+    }
+}
+
+/* موبايل صغير */
+@media (max-width: 480px) {
+    .navbar-brand img,
+    .footer-logo img {
+        height: 32px;
+    }
+    
+    .navbar-brand {
+        font-size: 1rem;
+        gap: 6px;
+    }
+    
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
     }
 }
