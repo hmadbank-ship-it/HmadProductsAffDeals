@@ -11,5 +11,19 @@
     "description": "ساعة عالية الجودة",
     "affiliate_link": "https://s.click.aliexpress.com/e/_Ewv0kPa",
     "featured": true
+  },
+  {
+    "id": 2,
+    "name": "هاتف",
+    "price": 2990,
+    "sale_price": 1900,
+    "image": "https://cdn.jsdelivr.net/gh/hmadbank-ship-it/My-files@main/IMG_20250102_234220.jpg",
+    "category": "electronics",
+    "rating": 3,
+    "currency": "$",
+    "description": "هاتف فيه العديد من المزايا",
+    "affiliate_link": "https://s.click.aliexpress.com/e/_Ewv0kPa",
+    "featured": true
   }
+  
 ]
