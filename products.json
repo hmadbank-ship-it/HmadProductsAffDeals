@@ -1,15 +1,15 @@
 [
   {
     "id": 1,
-    "name": "سماعة بلوتوث",
-    "price": 100,
-    "sale_price": 70,
-    "image": "static/images/p1.jpg",
+    "name": "ساعة ذكية",
+    "price": 150,
+    "sale_price": 90,
+    "image": "https://cdn.jsdelivr.net/gh/hmadbank-ship-it/My-files@main/IMG_20250102_234220.jpg",
     "category": "electronics",
-    "rating": 4.5,
+    "rating": 5,
     "currency": "$",
-    "description": "سماعة عالية الجودة",
-    "affiliate_link": "رابطك",
+    "description": "ساعة عالية الجودة",
+    "affiliate_link": "https://s.click.aliexpress.com/e/_Ewv0kPa",
     "featured": true
   }
 ]
