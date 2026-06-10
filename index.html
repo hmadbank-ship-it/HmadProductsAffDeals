@@ -271,5 +271,11 @@ fetch('products.json')
     document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">لا توجد منتجات</p>';
 });
 </script>
+    <script>
+document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
+    document.querySelector('.navbar-nav')?.classList.toggle('active');
+});
+</script>
+</body>
 </body>
 </html>
