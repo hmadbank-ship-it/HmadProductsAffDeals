@@ -1,13 +1,15 @@
-{
-  "id": 1,
-  "name": "ساعة ذكية",
-  "price": 199,
-  "sale_price": 149,
-  "currency": "درهم",
-  "image": "https://cdn.jsdelivr.net/gh/hmadbank-ship-it/My-files@main/IMG_20250102_234220.jpg",
-  "video": "https://www.youtube.com/watch?v=AbC123",
-  "affiliate_link": "https://s.click.aliexpress.com/e/_Ewv0kPa",
-  "description": "وصف كامل للمنتج هنا",
-  "rating": 4.5,
-  "category": "electronics"
-}
+[
+  {
+    "id": 1,
+    "name": "سماعة بلوتوث",
+    "price": 100,
+    "sale_price": 70,
+    "image": "static/images/p1.jpg",
+    "category": "electronics",
+    "rating": 4.5,
+    "currency": "$",
+    "description": "سماعة عالية الجودة",
+    "affiliate_link": "رابطك",
+    "featured": true
+  }
+]
