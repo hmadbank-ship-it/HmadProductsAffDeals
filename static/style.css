@@ -1,0 +1,15 @@
+body {
+    padding-bottom: 50px;
+}
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.hero-section, .btn-gradient {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
