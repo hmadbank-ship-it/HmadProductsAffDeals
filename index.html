@@ -202,7 +202,8 @@
 <script src="static/script.js"></script>
 
 <script>
-fetch('products.json')
+//fetch('products.json')
+fetch('products.json?v=' + new Date().getTime())
 .then(res => res.json())
 .then(products => {
     // عرض أفضل المنتجات في السلايدر
