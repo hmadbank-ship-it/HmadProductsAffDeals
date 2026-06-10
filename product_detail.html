@@ -70,7 +70,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const productId = parseInt(urlParams.get('id'));
 
 // 2. نقرأ ملف JSON ونجيب المنتج المطلوب
-fetch('products.json')
+//fetch('products.json')
+fetch('products.json?v=' + new Date().getTime())
 .then(res => res.json())
 .then(products => {
     const product = products.find(p => p.id == productId);
