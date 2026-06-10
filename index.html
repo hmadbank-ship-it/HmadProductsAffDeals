@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hmad Products - عروض حصرية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">🛒 Hmad Products</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="index.html">الرئيسية</a></li>
+                <li class="nav-item"><a class="nav-link" href="products.html">المنتجات</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<div class="container mt-4">
+    <div class="hero-section py-5 text-center text-white" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url('static/images/index_img1.png');background-size: cover;background-position: center;border-radius: 15px;margin-bottom: 50px;">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3">🔥 عروض حصرية - خصومات تصل إلى 70%</h1>
+            <h2 class="fw-semibold mb-3">أفضل المنتجات بأسعار لا تُقاوم</h2>
+            <p class="lead mb-4">
+                اكتشف مجموعة واسعة من المنتجات المميزة من AliExpress بأفضل الأسعار.
+                إلكترونيات، أزياء، منزل وحديقة والمزيد!
+            </p>
+            <a href="products.html" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">
+                🛒 تسوق الآن
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container mb-5">
+    <div class="row g-4 text-center">
+        <div class="col-md-3">
+            <div class="p-4 shadow-sm rounded-4 h-100" style="background:#fff;">
+                <h4 class="fw-bold">💰 أفضل الأسعار</h4>
+                <p class="text-muted">خصومات تصل إلى 70% على جميع المنتجات</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 shadow-sm rounded-4 h-100" style="background:#fff;">
+                <h4 class="fw-bold">🌍 شحن عالمي</h4>
+                <p class="text-muted">توصيل لجميع أنحاء العالم</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 shadow-sm rounded-4 h-100" style="background:#fff;">
+                <h4 class="fw-bold">🛡️ ضمان الجودة</h4>
+                <p class="text-muted">منتجات مختارة بعناية فائقة</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-4 shadow-sm rounded-4 h-100" style="background:#fff;">
+                <h4 class="fw-bold">⭐ تقييمات حقيقية</h4>
+                <p class="text-muted">آراء مشترين حقيين</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Browse by Category -->
+<div class="container mb-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">تصفح حسب الفئة</h2>
+        <p class="text-muted">اختر الفئة التي تناسبك</p>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=electronics'">
+                <div style="height:200px; overflow:hidden;">
+                    <img src="static/images/electronics.png" class="w-100 h-100" style="object-fit:cover;">
+                </div>
+                <div class="p-4 bg-white">
+                    <h4 class="fw-bold mb-2">📱 إلكترونيات</h4>
+                    <p class="text-muted mb-3">هواتف، أجهزة ذكية، إكسسوارات</p>
+                    <span class="btn btn-outline-primary">اكتشف المزيد ←</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=home'">
+                <div style="height:200px; overflow:hidden;">
+                    <img src="static/images/home.png" class="w-100 h-100" style="object-fit:cover;">
+                </div>
+                <div class="p-4 bg-white">
+                    <h4 class="fw-bold mb-2">🏡 المنزل</h4>
+                    <p class="text-muted mb-3">ديكور، أدوات منزلية</p>
+                    <span class="btn btn-outline-primary">اكتشف المزيد ←</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=kitchen'">
+                <div style="height:200px; overflow:hidden;">
+                    <img src="static/images/logo.png" class="w-100 h-100" style="object-fit:cover;">
+                </div>
+                <div class="p-4 bg-white">
+                    <h4 class="fw-bold mb-2">🍳 المطبخ</h4>
+                    <p class="text-muted mb-3">كل ما يتعلق بالمطبخ</p>
+                    <span class="btn btn-outline-primary">اكتشف المزيد ←</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=gaming'">
+                <div style="height:200px; overflow:hidden;">
+                    <img src="static/images/logo.png" class="w-100 h-100" style="object-fit:cover;">
+                </div>
+                <div class="p-4 bg-white">
+                    <h4 class="fw-bold mb-2">🎮 الألعاب</h4>
+                    <p class="text-muted mb-3">كل ما يتعلق بالألعاب</p>
+                    <span class="btn btn-outline-primary">اكتشف المزيد ←</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Featured Products Carousel -->
+<div id="featured-section" class="container" style="display:none;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">أفضل المنتجات</h2>
+        <a href="products.html" class="btn btn-outline-primary">عرض الكل →</a>
+    </div>
+    <div id="featuredCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner" id="carousel-inner"></div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+</div>
+
+<!-- Products Grid -->
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold">المنتجات</h2>
+        <a href="products.html" class="btn btn-outline-primary">عرض الكل →</a>
+    </div>
+    <div class="row g-4" id="products-grid">
+        <p class="text-center">جاري تحميل المنتجات...</p>
+    </div>
+</div>
+
+<!-- Special Offer -->
+<div class="container mb-5">
+    <div class="p-5 text-center text-white" style="background: linear-gradient(135deg, #ff512f, #dd2476); border-radius: 20px;">
+        <h2 class="fw-bold mb-3">🚨 لا تفوّت العروض!</h2>
+        <p class="lead mb-4">تصفح أحدث المنتجات واستفد من خصومات حصرية تصل إلى 60%. عروض محدودة الوقت!</p>
+        <a href="products.html" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">🛒 تسوق الآن</a>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4 mt-5">
+    <p class="mb-0">© 2026 Hmad Products - جميع الحقوق محفوظة</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+fetch('products.json')
+.then(res => res.json())
+.then(products => {
+    
+    // 1. عرض أفضل المنتجات في السلايدر
+    let featured = products.filter(p => p.featured == true);
+    if(featured.length > 0) {
+        document.getElementById('featured-section').style.display = 'block';
+        let carouselHTML = '';
+        featured.forEach((p, index) => {
+            let img = p.image || 'static/images/logo.png';
+            let price = p.sale_price || p.price;
+            let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-light-50">${p.currency || '$'}${p.price}</span>` : '';
+            let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
+            
+            carouselHTML += `
+            <div class="carousel-item ${index==0 ? 'active' : ''}">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff;">
+                    <div class="text-center text-md-start mb-3 mb-md-0">
+                        <h2 class="fw-bold mb-2">🔥 ${p.name}</h2>
+                        <p class="mb-3" style="font-size: 1.1rem;">${p.description}</p>
+                        <p class="fw-bold mb-3" style="font-size: 1.4rem;">
+                            ${p.currency || '$'}${price} ${oldPrice} ${discount}
+                        </p>
+                        <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">🛒 تسوق الآن</a>
+                    </div>
+                    <div class="text-center">
+                        <img src="${img}" class="img-fluid" style="max-height: 250px; border-radius: 12px;">
+                    </div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('carousel-inner').innerHTML = carouselHTML;
+    }
+
+    // 2. عرض المنتجات في الشبكة
+    let gridHTML = '';
+    products.slice(0, 6).forEach(p => {
+        let img = p.image || 'static/images/logo.png';
+        let price = p.sale_price || p.price;
+        let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-muted">${p.currency || '$'}${p.price}</span>` : '';
+        let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
+        let badge = p.featured ? `<span class="badge bg-warning text-dark mb-2">منتج مميز</span>` : '';
+        
+        gridHTML += `
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 rounded-4">
+                <img src="${img}" class="card-img-top rounded-top-4" alt="${p.name}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">${p.name}</h5>
+                    <p class="card-text mb-2">${p.description ? p.description.substring(0,60) + '...' : ''}</p>
+                    <p class="mb-1">تقييم: ${p.rating || 0}/5</p>
+                    ${badge}
+                    <div class="mt-auto">
+                        <p class="mb-1">
+                            <strong>${p.currency || '$'}${price}</strong>
+                            ${oldPrice} ${discount}
+                        </p>
+                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary w-100 btn-modern">عرض المنتج</a>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+    document.getElementById('products-grid').innerHTML = gridHTML;
+})
+.catch(() => {
+    document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">لا توجد منتجات</p>';
+});
+</script>
+</body>
+</html>
