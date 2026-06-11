@@ -211,16 +211,39 @@ const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // جلب المنتجات من Supabase بدل JSON
 supabase.from('products').select('*').order('id', {ascending: false}).then(({data: products, error}) => {
-    if (error) {
-        console.error(error)
-        document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">خطأ في تحميل المنتجات</p>'
-        return
-    }
+//    if (error) {
+        //console.error(error)
+  //      document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">خطأ في تحميل المنتجات</p>'
+  //      return
+    //}
+
+
+
+
+if (error) {
+    console.error(error)
+    
+    // تنبيه منبثق فيه تفاصيل الخطأ
+    alert('فشل تحميل المنتجات!\n\nالسبب: ' + error.message + '\n\nالكود: ' + error.code)
+    
+    // رسالة في الصفحة
+    document.getElementById('products-grid').innerHTML = 
+        `<div class="alert alert-danger text-center">
+            <h5>⚠️ خطأ في تحميل المنتجات</h5>
+            <p class="mb-1">${error.message}</p>
+            <small class="text-muted">الكود: ${error.code}</small>
+        </div>`
+    return
+}
+
+
+
+
+    
     if (!products || products.length === 0) {
         document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد</p>'
         return
     }
-
     // نفس كودك 100% - بس استبدلت p.image بـ p.images عشان اسم العمود عندك
     let featured = products.filter(p => p.featured == true);
     if(featured.length > 0) {
