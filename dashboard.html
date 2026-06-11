@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- التصميم حقك ما تغير حرف -->
+  <style>
+  .dashboard-card {
+      border-radius: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+  }
+  .form-card {
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  .table-card {
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  }
+  .btn-gradient {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      border: none;
+      color: white;
+  }
+  </style>
+</head>
+<body class="bg-light p-4">
+
+<div class="container">
+  <!-- Dashboard Stats -->
+  <div class="row mb-4">
+      <div class="col-md-6">
+          <div class="card dashboard-card p-4 text-center">
+              <h5>Total Products</h5>
+              <h2 id="total_products">0</h2>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="card dashboard-card p-4 text-center">
+              <h5>Total Clicks</h5>
+              <h2 id="total_clicks">0</h2>
+          </div>
+      </div>
+  </div>
+
+  <!-- Top Products -->
+  <div class="card form-card p-3 mb-4">
+    <h4>🔥 Top Products</h4>
+    <ul class="list-group" id="top_products_list">
+      <li class="list-group-item">جاري التحميل...</li>
+    </ul>
+  </div>
+
+  <!-- Add Product -->
+  <div class="card form-card p-4 mb-4">
+    <h3 class="mb-3">➕ Add New Product</h3>
+    <form id="addProductForm">
+        <input type="text" name="name" placeholder="Product Name" class="form-control mb-3" required>
+        <textarea name="description" placeholder="Description" class="form-control mb-3"></textarea>
+
+        <div class="row">
+            <div class="col-md-4">
+                <input type="number" name="price" placeholder="Original Price" step="0.01" class="form-control mb-3" required>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="sale_price" placeholder="Sale Price" step="0.01" class="form-control mb-3">
+            </div>
+            <div class="col-md-4">
+                <select name="currency" class="form-control mb-3">
+                    <option value="USD">USD 💵</option>
+                    <option value="MAD">MAD 🇲🇦</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">📂 الفئة</label>
+            <select name="category" class="form-control">
+                <option value="electronics">📱 إلكترونيات</option>
+                <option value="home">🏡 المنزل</option>
+                <option value="kitchen">المطبخ</option>
+                <option value="sports">الرياضة</option>
+                <option value="gaming">الألعاب</option>
+            </select>
+        </div>
+
+        <label>⭐ Rating</label>
+        <select name="rating" class="form-control mb-3">
+            <option value="5">★★★ (5)</option>
+            <option value="4">★★ (4)</option>
+            <option value="3">★★★ (3)</option>
+            <option value="2">★★ (2)</option>
+            <option value="1">★ (1)</option>
+        </select>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" name="featured" value="1" class="form-check-input">
+            <label class="form-check-label">🔥 Featured Product</label>
+        </div>
+
+        <label>📸 Images URL (فاصلة بينهم) - GitHub Pages ما يدعم رفع ملفات</label>
+        <input type="text" name="images" placeholder="https://img1.jpg,https://img2.jpg" class="form-control mb-2">
+
+        <label>🎥 Video URL - GitHub Pages ما يدعم رفع ملفات</label>
+        <input type="text" name="video" placeholder="https://youtube.com/..." class="form-control mb-3">
+
+        <input type="text" name="affiliate_link" placeholder="Affiliate Link" class="form-control mb-3">
+        <button class="btn btn-gradient w-100">Save Product</button>
+    </form>
+    <p id="add_msg" class="mt-2"></p>
+  </div>
+
+  <!-- Edit Products -->
+  <div class="card form-card p-4 mb-4" id="editForm" style="display:none;">
+    <h3 class="mb-3">✏️ Edit Product</h3>
+    <form id="editProductForm">
+        <input type="hidden" name="id" id="edit_id">
+        <input type="text" name="name" id="edit_name" class="form-control mb-3">
+        <textarea name="description" id="edit_description" class="form-control mb-3"></textarea>
+
+        <div class="row">
+            <div class="col-md-4">
+                <input type="number" name="price" id="edit_price" class="form-control mb-3">
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="sale_price" id="edit_sale_price" class="form-control mb-3">
+            </div>
+            <div class="col-md-4">
+                <select name="currency" id="edit_currency" class="form-control mb-3">
+                    <option value="USD">USD</option>
+                    <option value="MAD">MAD</option>
+                </select>
+            </div>
+        </div>
+
+        <select name="category" id="edit_category" class="form-control mb-3">
+            <option value="electronics">📱 إلكترونيات</option>
+            <option value="home">🏡 المنزل</option>
+            <option value="kitchen">المطبخ</option>
+            <option value="sports">الرياضة</option>
+            <option value="gaming">الألعاب</option>
+        </select>
+
+        <select name="rating" id="edit_rating" class="form-control mb-3">
+            <option value="5">5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+        </select>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" name="featured" id="edit_featured" class="form-check-input">
+            <label class="form-check-label">Featured</label>
+        </div>
+
+        <input type="text" name="affiliate_link" id="edit_link" class="form-control mb-3">
+
+        <label>📸 Images URL (اختياري)</label>
+        <input type="text" name="images" id="edit_images" class="form-control mb-2">
+
+        <label>🎥 Video URL (اختياري)</label>
+        <input type="text" name="video" id="edit_video" class="form-control mb-3">
+
+        <button class="btn btn-gradient w-100">Update Product</button>
+    </form>
+    <p id="edit_msg" class="mt-2"></p>
+  </div>
+
+  <!-- Products Table -->
+  <div class="card table-card p-3 shadow-sm">
+    <h3 class="mb-3">📦 All Products</h3>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle text-center mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Rating</th>
+            <th>Category</th>
+            <th>Featured</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="products_table">
+          <tr><td colspan="8">جاري التحميل...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <a href="#" id="logoutBtn" class="btn btn-danger mt-3">Logout</a>
+</div>
+
+<!-- Supabase + كود JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // 1. حط مفاتيحك هنا
+  const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
+  const SUPABASE_KEY = 'sb_publishable_tzs-nupKfVqiVVn02Bk6ZA_GyjVftKm'
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+  // 2. حماية الصفحة - لو ما مسجل دخول يرجعك لوجن
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (!session) window.location.href = 'login.html'
+  })
+
+  // 3. تسجيل خروج
+  document.getElementById('logoutBtn').onclick = async () => {
+    await supabase.auth.signOut()
+    window.location.href = 'login.html'
+  }
+
+  // 4. تحميل المنتجات من Supabase
+  async function loadProducts() {
+    const { data: products, error } = await supabase.from('products').select('*').order('id', { ascending: false })
+    
+    if (error) {
+      document.getElementById('products_table').innerHTML = `<tr><td colspan="8">خطأ: ${error.message}</td></tr>`
+      return
+    }
+
+    // الإحصائيات
+    document.getElementById('total_products').textContent = products.length
+    const totalClicks = products.reduce((sum, p) => sum + (p.clicks || 0), 0)
+    document.getElementById('total_clicks').textContent = totalClicks
+
+    // Top Products
+    const top = products.sort((a,b) => (b.clicks||0) - (a.clicks||0)).slice(0,5)
+    document.getElementById('top_products_list').innerHTML = top.map(p => 
+      `<li class="list-group-item d-flex justify-content-between">${p.name}<span class="badge bg-primary">${p.clicks||0} clicks</span></li>`
+    ).join('')
+
+    // الجدول
+    document.getElementById('products_table').innerHTML = products.map(p => {
+      const img = p.images ? p.images.split(',')[0] : 'https://via.placeholder.com/60'
+      const catName = {'electronics':'📱 إلكترونيات','home':'🏡 منزل','kitchen':'المطبخ','sports':'الرياضة','gaming':'الألعاب'}[p.category] || '-'
+      return `
+      <tr>
+        <td>${p.id}</td>
+        <td><img src="${img}" width="60" height="60" class="rounded shadow-sm border"></td>
+        <td class="fw-bold">${p.name}</td>
+        <td class="text-primary fw-semibold">${p.price} ${p.currency || 'USD'}</td>
+        <td>⭐ ${p.rating || 5}</td>
+        <td>${catName}</td>
+        <td>${p.featured ? '🔥' : '-'}</td>
+        <td>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-warning btn-sm px-3" onclick='editProduct(${JSON.stringify(p)})'>Edit</button>
+            <button class="btn btn-danger btn-sm px-3" onclick="deleteProduct(${p.id})">Delete</button>
+          </div>
+        </td>
+      </tr>`
+    }).join('')
+  }
+
+  // 5. إضافة منتج
+  document.getElementById('addProductForm').onsubmit = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const { error } = await supabase.from('products').insert([{
+      name: form.name.value,
+      description: form.description.value,
+      price: parseFloat(form.price.value),
+      sale_price: form.sale_price.value ? parseFloat(form.sale_price.value) : null,
+      currency: form.currency.value,
+      category: form.category.value,
+      rating: parseInt(form.rating.value),
+      featured: form.featured.checked,
+      images: form.images.value,
+      video: form.video.value,
+      affiliate_link: form.affiliate_link.value,
+      clicks: 0
+    }])
+    
+    document.getElementById('add_msg').textContent = error ? 'خطأ: ' + error.message : 'تم الحفظ ✓'
+    document.getElementById('add_msg').style.color = error ? 'red' : 'green'
+    if (!error) { form.reset(); loadProducts() }
+  }
+
+  // 6. تعديل منتج
+  window.editProduct = (p) => {
+    document.getElementById('editForm').style.display = 'block'
+    document.getElementById('edit_id').value = p.id
+    document.getElementById('edit_name').value = p.name
+    document.getElementById('edit_description').value = p.description
+    document.getElementById('edit_price').value = p.price
+    document.getElementById('edit_sale_price').value = p.sale_price
+    document.getElementById('edit_currency').value = p.currency
+    document.getElementById('edit_rating').value = p.rating
+    document.getElementById('edit_category').value = p.category
+    document.getElementById('edit_link').value = p.affiliate_link
+    document.getElementById('edit_images').value = p.images
+    document.getElementById('edit_video').value = p.video
+    document.getElementById('edit_featured').checked = p.featured
+    window.scrollTo({ top: 500, behavior: 'smooth' })
+  }
+
+  document.getElementById('editProductForm').onsubmit = async (e) => {
+    e.preventDefault()
+    const form = e.target
+    const { error } = await supabase.from('products').update({
+      name: form.name.value,
+      description: form.description.value,
+      price: parseFloat(form.price.value),
+      sale_price: form.sale_price.value ? parseFloat(form.sale_price.value) : null,
+      currency: form.currency.value,
+      category: form.category.value,
+      rating: parseInt(form.rating.value),
+      featured: form.featured.checked,
+      images: form.images.value,
+      video: form.video.value,
+      affiliate_link: form.affiliate_link.value
+    }).eq('id', form.id.value)
+    
+    document.getElementById('edit_msg').textContent = error ? 'خطأ: ' + error.message : 'تم التحديث ✓'
+    document.getElementById('edit_msg').style.color = error ? 'red' : 'green'
+    if (!error) { document.getElementById('editForm').style.display='none'; loadProducts() }
+  }
+
+  // 7. حذف منتج
+  window.deleteProduct = async (id) => {
+    if (confirm('متأكد تبي تحذف؟')) {
+      await supabase.from('products').delete().eq('id', id)
+      loadProducts()
+    }
+  }
+
+  // شغل التحميل أول ما تفتح الصفحة
+  loadProducts()
+</script>
+</body>
+</html>
