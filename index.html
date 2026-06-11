@@ -202,18 +202,18 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-// 1. حط مفاتيح Supabase حقك هنا
+// 1. المفاتيح - انتبه لـ const
 const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
-//const SUPABASE_KEY = 'sb_publishable_tzs-nupKfVqiVVn02Bk6ZA_GyjVftKm'
-SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
-// 2. دالة عرض المنتج
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+
+// 2. دالة عرض المنتج - زي ما هي عندك
 function renderProduct(p) {
     let imgs = p.images? p.images.split(',') : [];
-    let img = imgs[0] || 'static/images/logo.png';
+    let img = imgs[0] || 'https://via.placeholder.com/300x300.png?text=No+Image';
     let price = p.sale_price || p.price;
-    let oldPrice = p.sale_price? `<span class="text-decoration-line-through text-muted">${p.currency || '$'}${p.price}</span>` : '';
+    let oldPrice = p.sale_price? `<span class="text-decoration-line-through text-muted">${p.currency || 'MAD'}${p.price}</span>` : '';
     let discount = p.sale_price && p.sale_price < p.price? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
     let badge = p.featured? `<span class="badge bg-warning text-dark mb-2">منتج مميز</span>` : '';
 
@@ -228,7 +228,7 @@ function renderProduct(p) {
                 ${badge}
                 <div class="mt-auto">
                     <p class="mb-1">
-                        <strong>${p.currency || '$'}${price}</strong>
+                        <strong>${p.currency || 'MAD'}${price}</strong>
                         ${oldPrice} ${discount}
                     </p>
                     <a href="product_detail.html?id=${p.id}" class="btn btn-primary w-100 btn-modern">عرض المنتج</a>
@@ -238,35 +238,37 @@ function renderProduct(p) {
     </div>`;
 }
 
-// 3. جلب البيانات من Supabase
+// 3. جلب البيانات + تنبيه للخطأ عشان نشوف السبب
 async function loadProducts() {
+    console.log('بدأ التحميل...') // عشان نتأكد الكود اشتغل
+
     const { data: products, error } = await supabase
-       .from('products')
-       .select('*')
-       .order('created_at', { ascending: false })
-       .limit(6);
+      .from('products')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(6);
 
     if(error) {
-        console.error(error);
-        document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">خطأ في تحميل المنتجات</p>';
+        alert('خطأ Supabase: ' + error.message) // هذا أهم شي
+        document.getElementById('products-grid').innerHTML = `<p class="text-center text-danger">خطأ: ${error.message}</p>`;
         return;
     }
 
     if(!products || products.length === 0) {
-        document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد. أضف منتجات من dashboard</p>';
+        document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد</p>';
         return;
     }
 
-    // السلايدر للمنتجات المميزة
+    // باقي الكود زي ما هو عندك للسلايدر والشبكة...
     let featured = products.filter(p => p.featured == true);
     if(featured.length > 0) {
         document.getElementById('featured-section').style.display = 'block';
         let carouselHTML = '';
         featured.forEach((p, index) => {
             let imgs = p.images? p.images.split(',') : [];
-            let img = imgs[0] || 'static/images/logo.png';
+            let img = imgs[0] || 'https://via.placeholder.com/300x300.png?text=No+Image';
             let price = p.sale_price || p.price;
-            let oldPrice = p.sale_price? `<span class="text-decoration-line-through text-light-50">${p.currency || '$'}${p.price}</span>` : '';
+            let oldPrice = p.sale_price? `<span class="text-decoration-line-through text-light-50">${p.currency || 'MAD'}${p.price}</span>` : '';
             let discount = p.sale_price && p.sale_price < p.price? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
 
             carouselHTML += `
@@ -276,7 +278,7 @@ async function loadProducts() {
                         <h2 class="fw-bold mb-2">🔥 ${p.name}</h2>
                         <p class="mb-3" style="font-size: 1.1rem;">${p.description}</p>
                         <p class="fw-bold mb-3" style="font-size: 1.4rem;">
-                            ${p.currency || '$'}${price} ${oldPrice} ${discount}
+                            ${p.currency || 'MAD'}${price} ${oldPrice} ${discount}
                         </p>
                         <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">🛒 تسوق الآن</a>
                     </div>
@@ -289,7 +291,6 @@ async function loadProducts() {
         document.getElementById('carousel-inner').innerHTML = carouselHTML;
     }
 
-    // الشبكة
     let gridHTML = products.map(p => renderProduct(p)).join('');
     document.getElementById('products-grid').innerHTML = gridHTML;
 }
@@ -301,5 +302,8 @@ document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
 </script>
-</body>
+
+  </body>
 </html>
+
+
