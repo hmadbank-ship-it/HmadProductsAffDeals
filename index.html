@@ -133,7 +133,7 @@
     </div>
 </div>
 
-<!-- Featured Products Carousel - يجيب من JSON -->
+<!-- Featured Products Carousel - يجيب من Supabase -->
 <div id="featured-section" class="container" style="display:none;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">أفضل المنتجات</h2>
@@ -150,7 +150,7 @@
     </div>
 </div>
 
-<!-- Products Grid - يجيب من JSON -->
+<!-- Products Grid - يجيب من Supabase -->
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">المنتجات</h2>
@@ -198,51 +198,36 @@
   </div>
 </footer>
 
-    <script>
-document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
-    document.querySelector('.navbar-nav')?.classList.toggle('active');
-});
-</script>
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="static/script.js"></script>
 
 <script>
-// حط مفاتيح مشروعك هنا
-const SUPABASE_URL = 'https://hmadbank-ship-it.supabase.co'
-const SUPABASE_ANON_KEY = 'ضع_مفتاح_anon_key_هنا'
+// ضع مفاتيح مشروعك هنا
+const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
-// إنشاء الاتصال
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // جلب المنتجات من Supabase بدل JSON
-supabase
-.from('products')
-.select('*')
-.order('id', { ascending: false })
-.limit(6)
-.then(({ data: products, error }) => {
+supabase.from('products').select('*').order('id', {ascending: false}).then(({data: products, error}) => {
     if (error) {
-        console.error('خطأ Supabase:', error)
+        console.error(error)
         document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">خطأ في تحميل المنتجات</p>'
         return
     }
-
     if (!products || products.length === 0) {
         document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد</p>'
         return
     }
 
-    // عرض أفضل المنتجات في السلايدر - نفس كودك بالضبط
+    // نفس كودك 100% - بس استبدلت p.image بـ p.images عشان اسم العمود عندك
     let featured = products.filter(p => p.featured == true);
     if(featured.length > 0) {
         document.getElementById('featured-section').style.display = 'block';
         let carouselHTML = '';
         featured.forEach((p, index) => {
-            let img = p.image || p.images || 'static/images/logo.png';
+            let img = p.images || 'static/images/logo.png';
             let price = p.sale_price || p.price;
             let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-light-50">${p.currency || '$'}${p.price}</span>` : '';
             let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
@@ -267,10 +252,9 @@ supabase
         document.getElementById('carousel-inner').innerHTML = carouselHTML;
     }
 
-    // عرض المنتجات في الشبكة - نفس كودك بالضبط
     let gridHTML = '';
     products.slice(0, 6).forEach(p => {
-        let img = p.image || p.images || 'static/images/logo.png';
+        let img = p.images || 'static/images/logo.png';
         let price = p.sale_price || p.price;
         let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-muted">${p.currency || '$'}${p.price}</span>` : '';
         let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
@@ -302,13 +286,10 @@ supabase
     document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">لا توجد منتجات</p>';
 });
 </script>
-
-<script>
+    <script>
 document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
 </script>
-
-
 </body>
 </html>
