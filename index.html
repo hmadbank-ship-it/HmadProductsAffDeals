@@ -8,10 +8,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/style.css">
-    
 </head>
 
 <body>
+
+<!-- Navbar + Hero + Features + Categories نفس الكود حقك بدون تغيير -->
 
 <!-- Navbar -->
 <nav class="navbar">
@@ -133,7 +134,7 @@
     </div>
 </div>
 
-<!-- Featured Products Carousel - يجيب من Supabase -->
+<!-- Featured Products Carousel -->
 <div id="featured-section" class="container" style="display:none;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">أفضل المنتجات</h2>
@@ -150,7 +151,8 @@
     </div>
 </div>
 
-<!-- Products Grid - يجيب من Supabase -->
+
+<!-- Products Grid -->
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold">المنتجات</h2>
@@ -161,6 +163,7 @@
     </div>
 </div>
 
+
 <!-- Special Offer Section -->
 <div class="container mb-5">
     <div class="p-5 text-center text-white" style="background: linear-gradient(135deg, #ff512f, #dd2476); border-radius: 20px;">
@@ -170,6 +173,8 @@
     </div>
 </div>
 
+
+<!-- Footer نفس حقك -->
 <!-- Footer -->
 <footer class="footer">
   <div class="container">
@@ -198,59 +203,44 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="static/script.js"></script>
 
 <script>
-// ضع مفاتيح مشروعك هنا
+// 1. مفاتيح مشروعك
 const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+// 2. الصح: window.supabase مو supabase لحاله
+const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-// جلب المنتجات من Supabase بدل JSON
-supabase.from('products').select('*').order('id', {ascending: false}).then(({data: products, error}) => {
-//    if (error) {
-        //console.error(error)
-  //      document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">خطأ في تحميل المنتجات</p>'
-  //      return
-    //}
-
-
-
-
-if (error) {
-    console.error(error)
+// 3. دالة عرض المنتجات
+async function loadProducts() {
+    const { data: products, error } = await client
+        .from('products')
+        .select('*')
+        .order('id', {ascending: false})
     
-    // تنبيه منبثق فيه تفاصيل الخطأ
-    alert('فشل تحميل المنتجات!\n\nالسبب: ' + error.message + '\n\nالكود: ' + error.code)
-    
-    // رسالة في الصفحة
-    document.getElementById('products-grid').innerHTML = 
-        `<div class="alert alert-danger text-center">
-            <h5>⚠️ خطأ في تحميل المنتجات</h5>
-            <p class="mb-1">${error.message}</p>
-            <small class="text-muted">الكود: ${error.code}</small>
-        </div>`
-    return
-}
-
-
-
-
+    if (error) {
+        console.error(error)
+        alert('خطأ Supabase: ' + error.message)
+        document.getElementById('products-grid').innerHTML = `<p class="text-center text-danger">${error.message}</p>`
+        return
+    }
     
     if (!products || products.length === 0) {
         document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد</p>'
         return
     }
-    // نفس كودك 100% - بس استبدلت p.image بـ p.images عشان اسم العمود عندك
+
+    // Featured Carousel
     let featured = products.filter(p => p.featured == true);
     if(featured.length > 0) {
         document.getElementById('featured-section').style.display = 'block';
         let carouselHTML = '';
         featured.forEach((p, index) => {
-            let img = p.images || 'static/images/logo.png';
+            let img = p.images ? p.images.split(',')[0] : 'static/images/logo.png';
             let price = p.sale_price || p.price;
             let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-light-50">${p.currency || '$'}${p.price}</span>` : '';
             let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
@@ -260,7 +250,7 @@ if (error) {
                 <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff;">
                     <div class="text-center text-md-start mb-3 mb-md-0">
                         <h2 class="fw-bold mb-2">🔥 ${p.name}</h2>
-                        <p class="mb-3" style="font-size: 1.1rem;">${p.description}</p>
+                        <p class="mb-3">${p.description || ''}</p>
                         <p class="fw-bold mb-3" style="font-size: 1.4rem;">
                             ${p.currency || '$'}${price} ${oldPrice} ${discount}
                         </p>
@@ -275,9 +265,10 @@ if (error) {
         document.getElementById('carousel-inner').innerHTML = carouselHTML;
     }
 
+    // Products Grid - أول 6 منتجات
     let gridHTML = '';
     products.slice(0, 6).forEach(p => {
-        let img = p.images || 'static/images/logo.png';
+        let img = p.images ? p.images.split(',')[0] : 'static/images/logo.png';
         let price = p.sale_price || p.price;
         let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-muted">${p.currency || '$'}${p.price}</span>` : '';
         let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
@@ -286,33 +277,32 @@ if (error) {
         gridHTML += `
         <div class="col-md-4">
             <div class="card h-100 shadow-sm border-0 rounded-4">
-                <img src="${img}" class="card-img-top rounded-top-4" alt="${p.name}">
+                <img src="${img}" class="card-img-top rounded-top-4" style="height:250px;object-fit:cover" alt="${p.name}">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fw-bold">${p.name}</h5>
                     <p class="card-text mb-2">${p.description ? p.description.substring(0,60) + '...' : ''}</p>
-                    <p class="mb-1">تقييم: ${p.rating || 0}/5</p>
+                    <p class="mb-1">تقييم: ⭐ ${p.rating || 5}/5</p>
                     ${badge}
                     <div class="mt-auto">
                         <p class="mb-1">
                             <strong>${p.currency || '$'}${price}</strong>
                             ${oldPrice} ${discount}
                         </p>
-                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary w-100 btn-modern">عرض المنتج</a>
+                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary w-100">عرض المنتج</a>
                     </div>
                 </div>
             </div>
         </div>`;
     });
     document.getElementById('products-grid').innerHTML = gridHTML;
-})
-.catch(() => {
-    document.getElementById('products-grid').innerHTML = '<p class="text-center text-danger">لا توجد منتجات</p>';
-});
-</script>
-    <script>
+}
+
+loadProducts()
+
+// Navbar toggle
 document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
 </script>
 </body>
-</html>
+                    </html>
