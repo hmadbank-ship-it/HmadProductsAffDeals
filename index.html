@@ -136,7 +136,7 @@
 <!-- Featured Products Carousel - نفس تصميمك بالضبط -->
 <div id="featured-section" class="container mb-5" style="display:none;">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="fw-bold">⭐ أفضل المنتجات</h2>
+        <h2 class="fw-bold">أفضل المنتجات</h2>
         <a href="products.html" class="btn btn-outline-primary">عرض الكل →</a>
     </div>
 
@@ -273,29 +273,38 @@ async function loadProducts() {
 
 function displayCarousel(products) {
     const inner = document.getElementById('carousel-inner')
+
     inner.innerHTML = products.map((p, i) => {
-        let imgs = p.images? p.images.split(',').map(x => x.trim()) : []
+        let imgs = p.images? p.images.split(',').map(x => x.trim()).filter(x => x) : []
         let img = imgs[0] || 'static/images/logo.png'
         let price = p.sale_price || p.price
-        let oldPrice = p.sale_price && p.sale_price < p.price? `<s class="text-muted ms-2">${p.price} ${p.currency}</s>` : ''
+        let hasDiscount = p.sale_price && p.sale_price < p.price
+        let discount = hasDiscount? Math.round((p.price - p.sale_price) / p.price * 100) : 0
+        let desc = p.description? (p.description.length > 120? p.description.substring(0,120) + '...' : p.description) : ''
 
         return `
         <div class="carousel-item ${i == 0? 'active' : ''}">
-            <div class="row align-items-center bg-light p-4 rounded-4">
-                <div class="col-md-4 text-center">
-                    <img src="${img}" class="img-fluid rounded shadow" style="height:280px;object-fit:cover" onerror="this.src='static/images/logo.png'">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4 p-md-5" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff; min-height:350px;">
+
+                <div class="text-center text-md-start mb-4 mb-md-0" style="flex:1">
+                    <h2 class="fw-bold mb-3">🔥 ${p.name}</h2>
+                    <p class="mb-3" style="font-size: 1.1rem; opacity:0.95">${desc}</p>
+                    <p class="fw-bold mb-3" style="font-size: 1.5rem;">
+                        ${p.currency || '$'}${price}
+                        ${hasDiscount? `<span class="text-decoration-line-through ms-2" style="opacity:0.7; font-size:1.1rem">${p.currency || '$'}${p.price}</span> <span class="badge bg-danger ms-2">${discount}% خصم</span>` : ''}
+                    </p>
+                    <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">
+                        🛒 تسوق الآن
+                    </a>
                 </div>
-                <div class="col-md-8">
-                    <h3 class="fw-bold">${p.name}</h3>
-                    <p class="text-muted">${p.description? p.description.substring(0,150) + '...' : ''}</p>
-                    <h4 class="text-danger fw-bold">${price} ${p.currency || '$'} ${oldPrice}</h4>
-                    <a href="product_detail.html?id=${p.id}" class="btn btn-success btn-lg mt-2">تسوق الآن</a>
+
+                <div class="text-center" style="flex-shrink:0">
+                    <img src="${img}" class="img-fluid" style="max-height: 250px; border-radius: 12px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" onerror="this.src='static/images/logo.png'">
                 </div>
             </div>
         </div>`
     }).join('')
 }
-
 document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
