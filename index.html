@@ -209,23 +209,28 @@
 const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
+const headers = {
+    'apikey': SUPABASE_ANON_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+}
+
 async function loadProducts() {
-    const grid = document.getElementById('products-grid')
-
     try {
-        // نستخدم fetch مباشر عشان نتجنب مشاكل المكتبة على الجوال
-        const url = `${SUPABASE_URL}/rest/v1/products?select=id,name,price,currency,images,description,featured,sale_price,rating&limit=6&order=id.desc`
+        // 1. السلايدر: نجيب المنتجات اللي featured=true فقط
+        const featuredUrl = `${SUPABASE_URL}/rest/v1/products?featured=eq.true&select=*&order=created_at.desc&limit=5`
+        const featuredRes = await fetch(featuredUrl, { headers })
+        const featured = await featuredRes.json()
 
-        const res = await fetch(url, {
-            headers: {
-                'apikey': SUPABASE_ANON_KEY,
-                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-            }
-        })
+        if (featured.length > 0) {
+            document.getElementById('featured-section').style.display = 'block'
+            displayCarousel(featured)
+        }
 
-        if (!res.ok) throw new Error('Status: ' + res.status)
-
-        const products = await res.json()
+        // 2. الشبكة: نجيب كل المنتجات بدون فلتر
+        const grid = document.getElementById('products-grid')
+        const allUrl = `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc&limit=6`
+        const allRes = await fetch(allUrl, { headers })
+        const products = await allRes.json()
 
         if (products.length === 0) {
             grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات</p>'
@@ -233,24 +238,21 @@ async function loadProducts() {
         }
 
         grid.innerHTML = products.map(p => {
-            let img = 'static/images/logo.png'
-            if (p.images && p.images.trim() !== '' && p.images.startsWith('http')) {
-                img = p.images.split(',')[0].trim()
-            }
-
+            let imgs = p.images? p.images.split(',') : []
+            let img = imgs[0]?.trim() || 'static/images/logo.png'
             let price = p.sale_price || p.price
-            let oldPrice = p.sale_price? `<del class="text-muted ms-2" style="font-size:13px">${p.price} ${p.currency}</del>` : ''
+            let oldPrice = p.sale_price && p.sale_price < p.price? `<del class="text-muted ms-2" style="font-size:13px">${p.price} ${p.currency}</del>` : ''
             let badge = p.featured? `<span class="badge bg-warning text-dark mb-2">مميز</span>` : ''
 
             return `
             <div class="col-6 col-md-4">
-                <div class="card h-100 shadow-sm">
+                <div class="card h-100 shadow-sm border-0">
                     <img src="${img}" class="card-img-top" style="height:180px;object-fit:cover" onerror="this.src='static/images/logo.png'">
-                    <div class="card-body p-2">
+                    <div class="card-body p-2 d-flex flex-column">
                         ${badge}
-                        <h6 class="card-title mb-1" style="font-size:14px">${p.name}</h6>
-                        <p class="card-text mb-1" style="font-size:12px">${p.description? p.description.substring(0,40)+'...' : ''}</p>
-                        <p class="fw-bold mb-2" style="font-size:14px">${price} ${p.currency} ${oldPrice}</p>
+                        <h6 class="card-title mb-1" style="font-size:14px; min-height:40px">${p.name}</h6>
+                        <p class="card-text mb-1" style="font-size:12px; min-height:35px">${p.description? p.description.substring(0,40)+'...' : ''}</p>
+                        <p class="fw-bold mb-2 mt-auto" style="font-size:14px; color:#ff512f">${price} ${p.currency} ${oldPrice}</p>
                         <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm w-100">عرض المنتج</a>
                     </div>
                 </div>
@@ -258,24 +260,42 @@ async function loadProducts() {
         }).join('')
 
     } catch (e) {
-        grid.innerHTML = `
-        <div class="col-12">
-            <div class="alert alert-danger">
-                <b>خطأ:</b> ${e.message}<br>
-                <small>طفي مانع الإعلانات وجرب إعادة تحميل</small>
-            </div>
-        </div>`
+        document.getElementById('products-grid').innerHTML = `<div class="col-12"><div class="alert alert-danger">خطأ: ${e.message}</div></div>`
     }
 }
 
-loadProducts()
+function displayCarousel(products) {
+    const inner = document.getElementById('carousel-inner')
+    inner.innerHTML = products.map((p, i) => {
+        let imgs = p.images? p.images.split(',').map(x => x.trim()) : []
+        let img = imgs[0] || 'static/images/logo.png'
+        let price = p.sale_price || p.price
+        let oldPrice = p.sale_price && p.sale_price < p.price? `<s class="text-muted ms-2">${p.price} ${p.currency}</s>` : ''
 
-// Navbar toggle
+        return `
+        <div class="carousel-item ${i == 0? 'active' : ''}">
+            <div class="row align-items-center bg-light p-4 rounded-4">
+                <div class="col-md-4 text-center">
+                    <img src="${img}" class="img-fluid rounded shadow" style="height:280px;object-fit:cover" onerror="this.src='static/images/logo.png'">
+                </div>
+                <div class="col-md-8">
+                    <h3 class="fw-bold">${p.name}</h3>
+                    <p class="text-muted">${p.description? p.description.substring(0,150) + '...' : ''}</p>
+                    <h4 class="text-danger fw-bold">${price} ${p.currency || '$'} ${oldPrice}</h4>
+                    <a href="product_detail.html?id=${p.id}" class="btn btn-success btn-lg mt-2">تسوق الآن</a>
+                </div>
+            </div>
+        </div>`
+    }).join('')
+}
+
 document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
-  
+
+loadProducts();
 </script>
+  
 </body>
 </html>
 
