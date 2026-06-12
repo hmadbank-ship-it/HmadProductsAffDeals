@@ -3,113 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المنتجات - HmadProductsDeals</title>
-
+<title>المنتجات - Debug</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/style.css">
-
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar">
   <div class="container">
     <a class="navbar-brand" href="index.html">
       <img src="static/images/logo.png" alt="Logo">
       HmadProductsDeals
     </a>
-    <button class="navbar-toggle">☰</button>
-    <div class="navbar-nav">
-      <a class="btn-nav btn-nav-primary" href="index.html">الرئيسية</a>
-      <a class="btn-nav btn-nav-secondary" href="products.html">المنتجات</a>
-    </div>
   </div>
 </nav>
 
-<!-- Content -->
 <div class="container mt-5">
+<h2 class="mb-4">🛒 كل المنتجات - Debug Mode</h2>
 
-<h2 class="mb-4">🛒 كل المنتجات</h2>
+<!-- هذا البوكس بيطلع لك الخطأ -->
+<div id="debugBox" class="alert alert-info small">1. بدأ التحميل...</div>
 
-<!-- البحث + الفلترة + الترتيب -->
 <div class="row mb-4 g-2">
-    <div class="col-md-4">
-        <input type="text" id="searchInput" class="form-control" placeholder="ابحث عن منتج...">
-    </div>
+    <div class="col-md-4"><input type="text" id="searchInput" class="form-control" placeholder="ابحث..."></div>
     <div class="col-md-3">
-        <select id="categorySelect" class="form-select">
-            <option value="">كل الفئات</option>
-        </select>
+        <select id="categorySelect" class="form-select"><option value="">كل الفئات</option></select>
     </div>
     <div class="col-md-3">
         <select id="sortSelect" class="form-select">
             <option value="">افتراضي</option>
-            <option value="price_asc">السعر: من الأقل للأعلى</option>
-            <option value="price_desc">السعر: من الأعلى للأقل</option>
-            <option value="rating_desc">الأعلى تقييماً</option>
+            <option value="price_asc">السعر: الأقل</option>
+            <option value="price_desc">السعر: الأعلى</option>
         </select>
     </div>
-    <div class="col-md-2">
-        <button class="btn btn-primary w-100 btn-modern" onclick="applyFilters()">تطبيق</button>
-    </div>
+    <div class="col-md-2"><button class="btn btn-primary w-100" onclick="applyFilters()">تطبيق</button></div>
 </div>
 
-<!-- عرض المنتجات -->
-<div class="row g-4" id="productsGrid">
-    <p class="text-center">جاري تحميل المنتجات...</p>
+<div class="row g-4" id="productsGrid"></div>
 </div>
 
-</div>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4 footer-column">
-        <div class="footer-logo">
-          <img src="static/images/logo.png" alt="Logo">
-          <span>HmadProductsDeals</span>
-        </div>
-        <p>أفضل العروض والمنتجات من AliExpress بأسعار لا تُقاوم.</p>
-      </div>
-      <div class="col-md-4 footer-column">
-        <div class="footer-title">روابط سريعة</div>
-        <ul class="list-unstyled">
-          <li><a href="index.html">🏠 الرئيسية</a></li>
-          <li><a href="products.html">🛒 المنتجات</a></li>
-        </ul>
-      </div>
-      <div class="col-md-4 footer-column">
-        <div class="footer-title">تواصل معنا</div>
-        <p>📞 +212-722158341</p>
-      </div>
-    </div>
-    <hr style="border-color: rgba(255,255,255,0.2);">
-    <div class="text-center mt-3">© 2026 HmadProductsDeals</div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 1. مفاتيح Supabase - نفس اللي اشتغل معك في index
 const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
 let allProducts = [];
-let filteredProducts = [];
 
-// قراءة الباراميتر من الرابط
-const urlParams = new URLSearchParams(window.location.search);
-const categoryFromURL = urlParams.get('category');
-const searchFromURL = urlParams.get('search');
+const debug = (msg, type='info') => {
+    const el = document.getElementById('debugBox')
+    el.className = 'alert alert-' + type + ' small'
+    el.innerHTML += '<br>→ ' + msg
+}
 
 async function loadProducts() {
-    const grid = document.getElementById('productsGrid')
-
     try {
-        // نستخدم fetch مباشر عشان يشتغل على الجوال
+        debug('2. جاري الاتصال بـ Supabase...')
+
         const url = `${SUPABASE_URL}/rest/v1/products?select=*&order=created_at.desc`
 
         const res = await fetch(url, {
@@ -119,13 +67,29 @@ async function loadProducts() {
             }
         })
 
-        if (!res.ok) throw new Error('Status: ' + res.status)
+        debug('3. الرد وصل - Status: ' + res.status)
+
+        if (!res.ok) {
+            const errText = await res.text()
+            debug('❌ فشل: ' + errText, 'danger')
+            return
+        }
 
         allProducts = await res.json()
-        filteredProducts = [...allProducts]
+        debug('✅ نجح! عدد المنتجات: ' + allProducts.length, 'success')
 
-        // نعبي قائمة الفئات تلقائياً
-        const categories = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+        if (allProducts.length === 0) {
+            debug('⚠️ الجدول فاضي - أضف منتج من Supabase', 'warning')
+            document.getElementById('productsGrid').innerHTML = '<p class="text-center">لا توجد منتجات</p>'
+            return
+        }
+
+        // عرض اسم أول منتج للتأكد
+        debug('4. أول منتج: ' + allProducts[0].name, 'success')
+
+        // نعبي الفئات
+        const categories = [...new Set(allProducts.map(p => p.category?.trim()).filter(Boolean))];
+        debug('5. الفئات الموجودة: ' + categories.join(', '))
         const categorySelect = document.getElementById('categorySelect');
         categories.forEach(cat => {
             const option = document.createElement('option');
@@ -134,18 +98,11 @@ async function loadProducts() {
             categorySelect.appendChild(option);
         });
 
-        // لو جاي من الرابط بفلتر جاهز
-        if(categoryFromURL) categorySelect.value = categoryFromURL;
-        if(searchFromURL) document.getElementById('searchInput').value = searchFromURL;
-
         applyFilters();
 
     } catch (e) {
-        grid.innerHTML = `
-        <div class="col-12 alert-danger">
-            خطأ في تحميل المنتجات: ${e.message}<br>
-            <small>طفي مانع الإعلانات وجرب إعادة تحميل</small>
-        </div>`
+        debug('❌ خطأ فادح: ' + e.message + ' - النوع: ' + e.name, 'danger')
+        debug('الحل: طفي مانع الإعلانات أو جرب 4G', 'warning')
     }
 }
 
@@ -154,70 +111,42 @@ function applyFilters() {
     let category = document.getElementById('categorySelect').value;
     let sort = document.getElementById('sortSelect').value;
 
-    filteredProducts = allProducts.filter(p => {
-        let matchSearch =!search ||
-                         p.name.toLowerCase().includes(search) ||
-                         (p.description && p.description.toLowerCase().includes(search));
-        let matchCategory =!category || p.category.trim() == category.trim();
+    let filtered = allProducts.filter(p => {
+        let matchSearch =!search || p.name.toLowerCase().includes(search)
+        let matchCategory =!category || (p.category && p.category.trim() == category.trim())
         return matchSearch && matchCategory;
     });
 
-    // الترتيب
-    if(sort == 'price_asc') {
-        filteredProducts.sort((a,b) => (a.sale_price || a.price) - (b.sale_price || b.price));
-    } else if(sort == 'price_desc') {
-        filteredProducts.sort((a,b) => (b.sale_price || b.price) - (a.sale_price || a.price));
-    } else if(sort == 'rating_desc') {
-        filteredProducts.sort((a,b) => (b.rating || 0) - (a.rating || 0));
-    }
+    if(sort == 'price_asc') filtered.sort((a,b) => (a.sale_price || a.price) - (b.sale_price || b.price));
+    if(sort == 'price_desc') filtered.sort((a,b) => (b.sale_price || b.price) - (a.sale_price || a.price));
 
-    displayProducts();
+    displayProducts(filtered);
 }
 
-function displayProducts() {
+function displayProducts(filtered) {
     const grid = document.getElementById('productsGrid');
 
-    if(filteredProducts.length == 0) {
-        grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات تطابق بحثك</p>';
+    if(filtered.length == 0) {
+        grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات</p>';
         return;
     }
 
+    debug('6. جاري عرض ' + filtered.length + ' منتج', 'success')
+
     let html = '';
-    filteredProducts.forEach(p => {
+    filtered.forEach(p => {
         let imgs = p.images? p.images.split(',') : [];
         let img = imgs[0]?.trim() || 'static/images/logo.png';
         let price = p.sale_price || p.price;
-        let oldPrice = p.sale_price && p.sale_price < p.price?
-            `<small class="text-muted text-decoration-line-through ms-2">${p.currency || '$'}${p.price}</small>` : '';
-        let discount = p.sale_price && p.sale_price < p.price?
-            `<span class="badge bg-danger mb-2">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
-
-        // النجوم
-        const rating = p.rating || 0;
-        const fullStars = Math.floor(rating);
-        const halfStar = (rating - fullStars) >= 0.5? 1 : 0;
-        const emptyStars = 5 - fullStars - halfStar;
-        let starsHTML = '';
-        for(let i=0; i<fullStars; i++) starsHTML += '<span class="text-warning">&#9733;</span>';
-        if(halfStar) starsHTML += '<span class="text-warning">&#9733;</span>';
-        for(let i=0; i<emptyStars; i++) starsHTML += '<span class="text-secondary">&#9733;</span>';
 
         html += `
         <div class="col-6 col-md-3">
-            <div class="card h-100 shadow-sm">
-                <img src="${img}" class="card-img-top" style="height:200px; object-fit:cover" onerror="this.src='static/images/logo.png'">
-                <div class="card-body d-flex flex-column p-2">
-                    <h6 class="card-title" style="font-size:14px">${p.name}</h6>
-                    <p class="card-text mb-1">
-                        <span class="fw-bold">${p.currency || '$'}${price}</span>
-                        ${oldPrice}
-                    </p>
-                    ${discount}
-                    <div class="mb-2" style="font-size:12px">
-                        ${starsHTML}
-                        <small>(${rating})</small>
-                    </div>
-                    <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm mt-auto btn-modern">عرض التفاصيل</a>
+            <div class="card h-100">
+                <img src="${img}" style="height:180px; object-fit:cover" onerror="this.src='static/images/logo.png'">
+                <div class="card-body p-2">
+                    <h6 style="font-size:14px">${p.name}</h6>
+                    <p class="fw-bold mb-2">${price} ${p.currency || '$'}</p>
+                    <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm w-100">تفاصيل</a>
                 </div>
             </div>
         </div>`;
@@ -225,15 +154,9 @@ function displayProducts() {
     grid.innerHTML = html;
 }
 
-// تطبيق الفلتر تلقائياً
 document.getElementById('searchInput').addEventListener('input', applyFilters);
 document.getElementById('categorySelect').addEventListener('change', applyFilters);
 document.getElementById('sortSelect').addEventListener('change', applyFilters);
-
-// navbar toggle
-document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
-    document.querySelector('.navbar-nav')?.classList.toggle('active');
-});
 
 loadProducts();
 </script>
