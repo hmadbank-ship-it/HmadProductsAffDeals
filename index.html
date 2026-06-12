@@ -203,98 +203,68 @@
   </div>
 </footer>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="static/script.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// 1. مفاتيح مشروعك
 const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
-// 2. الصح: window.supabase مو supabase لحاله
-const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-// 3. دالة عرض المنتجات
 async function loadProducts() {
-    const { data: products, error } = await client
-        .from('products')
-        .select('*')
-        .order('id', {ascending: false})
-    
-    if (error) {
-        console.error(error)
-        alert('خطأ Supabase: ' + error.message)
-        document.getElementById('products-grid').innerHTML = `<p class="text-center text-danger">${error.message}</p>`
-        return
-    }
-    
-    if (!products || products.length === 0) {
-        document.getElementById('products-grid').innerHTML = '<p class="text-center text-muted">لا توجد منتجات بعد</p>'
-        return
-    }
+    const grid = document.getElementById('products-grid')
 
-    // Featured Carousel
-    let featured = products.filter(p => p.featured == true);
-    if(featured.length > 0) {
-        document.getElementById('featured-section').style.display = 'block';
-        let carouselHTML = '';
-        featured.forEach((p, index) => {
-            let img = p.images ? p.images.split(',')[0] : 'static/images/logo.png';
-            let price = p.sale_price || p.price;
-            let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-light-50">${p.currency || '$'}${p.price}</span>` : '';
-            let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
-            
-            carouselHTML += `
-            <div class="carousel-item ${index==0 ? 'active' : ''}">
-                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff;">
-                    <div class="text-center text-md-start mb-3 mb-md-0">
-                        <h2 class="fw-bold mb-2">🔥 ${p.name}</h2>
-                        <p class="mb-3">${p.description || ''}</p>
-                        <p class="fw-bold mb-3" style="font-size: 1.4rem;">
-                            ${p.currency || '$'}${price} ${oldPrice} ${discount}
-                        </p>
-                        <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">🛒 تسوق الآن</a>
-                    </div>
-                    <div class="text-center">
-                        <img src="${img}" class="img-fluid" style="max-height: 250px; border-radius: 12px;">
+    try {
+        // نستخدم fetch مباشر عشان نتجنب مشاكل المكتبة على الجوال
+        const url = `${SUPABASE_URL}/rest/v1/products?select=id,name,price,currency,images,description,featured,sale_price,rating&limit=6&order=id.desc`
+
+        const res = await fetch(url, {
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+            }
+        })
+
+        if (!res.ok) throw new Error('Status: ' + res.status)
+
+        const products = await res.json()
+
+        if (products.length === 0) {
+            grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات</p>'
+            return
+        }
+
+        grid.innerHTML = products.map(p => {
+            let img = 'static/images/logo.png'
+            if (p.images && p.images.trim() !== '' && p.images.startsWith('http')) {
+                img = p.images.split(',')[0].trim()
+            }
+
+            let price = p.sale_price || p.price
+            let oldPrice = p.sale_price? `<del class="text-muted ms-2" style="font-size:13px">${p.price} ${p.currency}</del>` : ''
+            let badge = p.featured? `<span class="badge bg-warning text-dark mb-2">مميز</span>` : ''
+
+            return `
+            <div class="col-6 col-md-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="${img}" class="card-img-top" style="height:180px;object-fit:cover" onerror="this.src='static/images/logo.png'">
+                    <div class="card-body p-2">
+                        ${badge}
+                        <h6 class="card-title mb-1" style="font-size:14px">${p.name}</h6>
+                        <p class="card-text mb-1" style="font-size:12px">${p.description? p.description.substring(0,40)+'...' : ''}</p>
+                        <p class="fw-bold mb-2" style="font-size:14px">${price} ${p.currency} ${oldPrice}</p>
+                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm w-100">عرض المنتج</a>
                     </div>
                 </div>
-            </div>`;
-        });
-        document.getElementById('carousel-inner').innerHTML = carouselHTML;
-    }
+            </div>`
+        }).join('')
 
-    // Products Grid - أول 6 منتجات
-    let gridHTML = '';
-    products.slice(0, 6).forEach(p => {
-        let img = p.images ? p.images.split(',')[0] : 'static/images/logo.png';
-        let price = p.sale_price || p.price;
-        let oldPrice = p.sale_price ? `<span class="text-decoration-line-through text-muted">${p.currency || '$'}${p.price}</span>` : '';
-        let discount = p.sale_price && p.sale_price < p.price ? `<span class="text-danger fw-bold">${Math.round((p.price - p.sale_price) / p.price * 100)}% خصم</span>` : '';
-        let badge = p.featured ? `<span class="badge bg-warning text-dark mb-2">منتج مميز</span>` : '';
-        
-        gridHTML += `
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 rounded-4">
-                <img src="${img}" class="card-img-top rounded-top-4" style="height:250px;object-fit:cover" alt="${p.name}">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title fw-bold">${p.name}</h5>
-                    <p class="card-text mb-2">${p.description ? p.description.substring(0,60) + '...' : ''}</p>
-                    <p class="mb-1">تقييم: ⭐ ${p.rating || 5}/5</p>
-                    ${badge}
-                    <div class="mt-auto">
-                        <p class="mb-1">
-                            <strong>${p.currency || '$'}${price}</strong>
-                            ${oldPrice} ${discount}
-                        </p>
-                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary w-100">عرض المنتج</a>
-                    </div>
-                </div>
+    } catch (e) {
+        grid.innerHTML = `
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <b>خطأ:</b> ${e.message}<br>
+                <small>طفي مانع الإعلانات وجرب إعادة تحميل</small>
             </div>
-        </div>`;
-    });
-    document.getElementById('products-grid').innerHTML = gridHTML;
+        </div>`
+    }
 }
 
 loadProducts()
@@ -303,6 +273,9 @@ loadProducts()
 document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
+  
 </script>
 </body>
-                    </html>
+</html>
+
+  
