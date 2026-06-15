@@ -267,7 +267,7 @@ async function loadProducts() {
         }).join('')
 
     } catch (e) {
-        document.getElementById('products-grid').innerHTML = `<div class="col-12"><div class="alert alert-danger">خطأ: ${e.message}</div></div>`
+        document.getElementById('products-grid').innerHTML = `<div class="col-12"><div class="alert alert-danger">خطأ في تحميل المنتجات، الرجاء إعادة المحاولة لاحقا.</div></div>`
     }
 }
 
