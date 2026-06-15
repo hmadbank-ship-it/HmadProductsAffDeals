@@ -57,6 +57,9 @@
             border-color: #6a11cb;
             box-shadow: 0 5px 15px rgba(106,17,203,0.2);
         }
+        .btn-google:active {
+            transform: scale(0.98);
+        }
         .alert {
             padding: 12px;
             border-radius: 8px;
@@ -66,6 +69,7 @@
             color: #c33;
             border: 1px solid #fcc;
             text-align: right;
+            font-size: 14px;
         }
         .back-link {
             margin-top: 25px;
@@ -87,7 +91,7 @@
 
         <div id="alert" class="alert"></div>
 
-        <button onclick="signInWithGoogle()" class="btn-google">
+        <button id="google-btn" class="btn-google">
             <svg width="20" height="20" viewBox="0 0 48 48">
                 <path fill="#4285F4" d="M43.6 20.5h-1.9V20H24v8h11.3c-1.6 4.3-5.7 7.5-11.3 7.5-6.6 0-12-5.4-12-12s5.4-12 12-12c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.5 0 20-7.6 20-20 0-1.3-0.1-2.7-0.4-4z"/>
                 <path fill="#34A853" d="M6.3 14.3l6.6 4.8C14.5 16.1 18.9 14 24 14c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 16.7 4 10.5 8.1 6.3 14.3z"/>
@@ -102,7 +106,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // حط بيانات مشروعك هنا
         const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -111,24 +114,42 @@
             const alert = document.getElementById('alert');
             alert.textContent = msg;
             alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 5000);
         }
 
+        // دالة تسجيل الدخول بجوجل
         async function signInWithGoogle() {
+            document.getElementById('google-btn').disabled = true;
+            
             const { error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.origin + '/index.html'
+                    redirectTo: window.location.origin + '/login.html'
                 }
             });
             
             if (error) {
                 showAlert('خطأ: ' + error.message);
+                document.getElementById('google-btn').disabled = false;
+                console.error(error);
             }
         }
 
+        // ربط الزر بالدالة
+        document.getElementById('google-btn').addEventListener('click', signInWithGoogle);
+
         // لو المستخدم مسجل دخول نرجعه للرئيسية مباشرة
         supabase.auth.getSession().then(({ data: { session } }) => {
-            if (session) window.location.href = 'index.html';
+            if (session) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // بعد الرجوع من جوجل، نتأكد من الجلسة
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                window.location.href = 'index.html';
+            }
         });
     </script>
 </body>
