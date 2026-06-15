@@ -57,8 +57,9 @@
             border-color: #6a11cb;
             box-shadow: 0 5px 15px rgba(106,17,203,0.2);
         }
-        .btn-google:active {
-            transform: scale(0.98);
+        .btn-google:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .alert {
             padding: 12px;
@@ -91,7 +92,7 @@
 
         <div id="alert" class="alert"></div>
 
-        <button id="google-btn" class="btn-google">
+        <button id="google-btn" type="button" class="btn-google">
             <svg width="20" height="20" viewBox="0 0 48 48">
                 <path fill="#4285F4" d="M43.6 20.5h-1.9V20H24v8h11.3c-1.6 4.3-5.7 7.5-11.3 7.5-6.6 0-12-5.4-12-12s5.4-12 12-12c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.5 0 20-7.6 20-20 0-1.3-0.1-2.7-0.4-4z"/>
                 <path fill="#34A853" d="M6.3 14.3l6.6 4.8C14.5 16.1 18.9 14 24 14c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 16.7 4 10.5 8.1 6.3 14.3z"/>
@@ -117,35 +118,35 @@
             setTimeout(() => alert.style.display = 'none', 5000);
         }
 
-        // دالة تسجيل الدخول بجوجل
-        async function signInWithGoogle() {
-            document.getElementById('google-btn').disabled = true;
+        // نربط الزر بعد ما الصفحة تحمل كامل
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('google-btn');
             
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin + '/login.html'
+            btn.addEventListener('click', async function() {
+                btn.disabled = true;
+                btn.innerHTML = 'جاري التحويل...';
+                
+                const { error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/login.html'
+                    }
+                });
+                
+                if (error) {
+                    showAlert('خطأ: ' + error.message);
+                    btn.disabled = false;
+                    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M43.6 20.5h-1.9V20H24v8h11.3c-1.6 4.3-5.7 7.5-11.3 7.5-6.6 0-12-5.4-12-12s5.4-12 12-12c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10.5 0 20-7.6 20-20 0-1.3-0.1-2.7-0.4-4z"/><path fill="#34A853" d="M6.3 14.3l6.6 4.8C14.5 16.1 18.9 14 24 14c2.6 0 5 0.9 6.9 2.4l5.7-5.7C34.1 5.4 29.3 4 24 4 16.7 4 10.5 8.1 6.3 14.3z"/><path fill="#FBBC05" d="M24 44c5.1 0 9.7-1.9 13.3-5l-6.2-5.1c-1.7 1.2-4 1.9-7.1 1.9-5.4 0-10-3.6-11.6-8.5l-6.6 5.1C10.3 39.9 16.7 44 24 44z"/><path fill="#EA4335" d="M43.6 20.5h-1.9V20H24v8h11.3c-0.8 2.2-2.2 4-4 5.4l6.2 5.1c3.7-3.4 5.8-8.4 5.8-14.5 0-1.3-0.1-2.7-0.4-4z"/></svg> تسجيل الدخول بجوجل`;
+                    console.error(error);
                 }
             });
-            
-            if (error) {
-                showAlert('خطأ: ' + error.message);
-                document.getElementById('google-btn').disabled = false;
-                console.error(error);
-            }
-        }
-
-        // ربط الزر بالدالة
-        document.getElementById('google-btn').addEventListener('click', signInWithGoogle);
-
-        // لو المستخدم مسجل دخول نرجعه للرئيسية مباشرة
-        supabase.auth.getSession().then(({ data: { session } }) => {
-            if (session) {
-                window.location.href = 'index.html';
-            }
         });
 
-        // بعد الرجوع من جوجل، نتأكد من الجلسة
+        // لو مسجل دخول نرجعه الرئيسية
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) window.location.href = 'index.html';
+        });
+
         supabase.auth.onAuthStateChange((event, session) => {
             if (event === 'SIGNED_IN' && session) {
                 window.location.href = 'index.html';
