@@ -179,10 +179,12 @@ async function loadProduct() {
             </div>
         </div>`;
     } catch (e) {
-        document.getElementById('product-detail').innerHTML = `
-        <div class="alert alert-danger">
-            <b>خطأ في التحميل:</b> ${e.message}<br>
-            <small>طفي مانع الإعلانات وجرب مرة ثانية</small>
+        grid.innerHTML = `
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <b>خطأ:</b> في تحميل المنتجات.<br>
+                <small>الرجاء إعادة المحاولة لاحقا.</small>
+            </div>
         </div>`
     }
 }
