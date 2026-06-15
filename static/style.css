@@ -118,6 +118,22 @@ body {
     color: var(--primary-dark);
 }
 
+.btn-nav-outline {
+    border: 1px solid #6a11cb;
+    color: #6a11cb;
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+.btn-nav-outline:hover {
+    background: #6a11cb;
+    color: white;
+}
+
+
+
+
+
 /* قائمة الموبايل */
 .navbar-toggle {
     display: none;
