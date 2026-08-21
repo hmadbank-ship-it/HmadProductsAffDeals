@@ -23,7 +23,6 @@
     <div class="navbar-nav">
       <a class="btn-nav btn-nav-primary" href="index.html">الرئيسية</a>
       <a class="btn-nav btn-nav-secondary" href="products.html">المنتجات</a>
-      <a class="btn-nav btn-nav-outline" href="login.html" id="auth-btn">تسجيل الدخول</a>
     </div>
   </div>
 </nav>
@@ -306,28 +305,6 @@ document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
     document.querySelector('.navbar-nav')?.classList.toggle('active');
 });
 
-// تحقق من حالة المستخدم
-const authBtn = document.getElementById('auth-btn');
-supabase.auth.getSession().then(({ data: { session } }) => {
-    if (session) {
-        authBtn.textContent = 'حسابي';
-        authBtn.href = 'account.html';
-    } else {
-        authBtn.textContent = 'تسجيل الدخول';
-        authBtn.href = 'login.html';
-    }
-});
-
-// تحديث الزر لو المستخدم سجل دخول/خروج
-supabase.auth.onAuthStateChange((event, session) => {
-    if (session) {
-        authBtn.textContent = 'حسابي';
-        authBtn.href = 'account.html';
-    } else {
-        authBtn.textContent = 'تسجيل الدخول';
-        authBtn.href = 'login.html';
-    }
-});
 
 loadProducts();
 </script>
