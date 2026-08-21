@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HmadProductsDeals - عروض حصرية</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- بدلنا ل Bootstrap RTL -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="static/style.css">
 </head>
@@ -16,7 +17,7 @@
 <nav class="navbar">
   <div class="container">
     <a class="navbar-brand" href="index.html">
-      <img src="static/images/logo.png" alt="Logo">
+      <img src="static/images/logo.png" alt="HmadProductsDeals Logo">
       HmadProductsDeals
     </a>
     <button class="navbar-toggle">☰</button>
@@ -84,7 +85,7 @@
         <div class="col-md-6">
             <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=electronics'">
                 <div style="height:200px; overflow:hidden;">
-                    <img src="static/images/electronics.png" class="w-100 h-100" style="object-fit:cover;" onerror="this.src='static/images/logo.png'">
+                    <img src="static/images/electronics.png" class="w-100 h-100" style="object-fit:cover;" alt="إلكترونيات" loading="lazy" onerror="this.src='static/images/logo.png'">
                 </div>
                 <div class="p-4 bg-white">
                     <h4 class="fw-bold mb-2">📱 إلكترونيات</h4>
@@ -96,7 +97,7 @@
         <div class="col-md-6">
             <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=home'">
                 <div style="height:200px; overflow:hidden;">
-                    <img src="static/images/home.png" class="w-100 h-100" style="object-fit:cover;" onerror="this.src='static/images/logo.png'">
+                    <img src="static/images/home.png" class="w-100 h-100" style="object-fit:cover;" alt="المنزل" loading="lazy" onerror="this.src='static/images/logo.png'">
                 </div>
                 <div class="p-4 bg-white">
                     <h4 class="fw-bold mb-2">🏡 المنزل</h4>
@@ -108,7 +109,7 @@
         <div class="col-md-6">
             <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=kitchen'">
                 <div style="height:200px; overflow:hidden;">
-                    <img src="static/images/kitchen.png" class="w-100 h-100" style="object-fit:cover;" onerror="this.src='static/images/logo.png'">
+                    <img src="static/images/kitchen.png" class="w-100 h-100" style="object-fit:cover;" alt="المطبخ" loading="lazy" onerror="this.src='static/images/logo.png'">
                 </div>
                 <div class="p-4 bg-white">
                     <h4 class="fw-bold mb-2">🍳 المطبخ</h4>
@@ -120,7 +121,7 @@
         <div class="col-md-6">
             <div class="rounded-4 overflow-hidden shadow-sm h-100" style="cursor:pointer; transition:0.3s;" onclick="location.href='products.html?category=gaming'">
                 <div style="height:200px; overflow:hidden;">
-                    <img src="static/images/gaming.png" class="w-100 h-100" style="object-fit:cover;" onerror="this.src='static/images/logo.png'">
+                    <img src="static/images/gaming.png" class="w-100 h-100" style="object-fit:cover;" alt="الألعاب" loading="lazy" onerror="this.src='static/images/logo.png'">
                 </div>
                 <div class="p-4 bg-white">
                     <h4 class="fw-bold mb-2">🎮 الألعاب</h4>
@@ -179,7 +180,7 @@
     <div class="row">
       <div class="col-md-4 footer-column">
         <div class="footer-logo">
-          <img src="static/images/logo.png" alt="Logo">
+          <img src="static/images/logo.png" alt="HmadProductsDeals Logo">
           <span>HmadProductsDeals</span>
         </div>
         <p>أفضل العروض والمنتجات من AliExpress بأسعار لا تُقاوم. نختار لك أفضل المنتجات بعناية لنوفر لك تجربة تسوق مميزة.</p>
@@ -204,109 +205,109 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// بيانات Supabase
-const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
+document.addEventListener('DOMContentLoaded', () => {
+    // بيانات Supabase
+    const SUPABASE_URL = 'https://dxuikjjfrkbzrzkomvne.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4dWlrampmcmtienJ6a29tdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODExNzcyMzAsImV4cCI6MjA5Njc1MzIzMH0.WXhU1_qEqglpLBfJk-pLwxjbHGXleOsfLukNTqHERPc'
 
-// تعريف supabase - هذا كان ناقص
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    const headers = {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+    }
 
-const headers = {
-    'apikey': SUPABASE_ANON_KEY,
-    'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-}
+    async function loadProducts() {
+        try {
+            // 1. السلايدر: المنتجات المميزة فقط
+            const featuredUrl = `${SUPABASE_URL}/rest/v1/products?featured=eq.true&select=*&order=created_at.desc&limit=5`
+            const featuredRes = await fetch(featuredUrl, { headers })
+            if(!featuredRes.ok) throw new Error('فشل تحميل المنتجات المميزة')
+            const featured = await featuredRes.json()
 
-async function loadProducts() {
-    try {
-        // 1. السلايدر: المنتجات المميزة فقط
-        const featuredUrl = `${SUPABASE_URL}/rest/v1/products?featured=eq.true&select=*&order=created_at.desc&limit=5`
-        const featuredRes = await fetch(featuredUrl, { headers })
-        const featured = await featuredRes.json()
+            if (featured.length > 0) {
+                document.getElementById('featured-section').style.display = 'block'
+                displayCarousel(featured)
+            }
 
-        if (featured.length > 0) {
-            document.getElementById('featured-section').style.display = 'block'
-            displayCarousel(featured)
+            // 2. الشبكة: كل المنتجات
+            const grid = document.getElementById('products-grid')
+            const allUrl = `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc&limit=6`
+            const allRes = await fetch(allUrl, { headers })
+            if(!allRes.ok) throw new Error('فشل تحميل المنتجات')
+            const products = await allRes.json()
+
+            if (products.length === 0) {
+                grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات</p>'
+                return
+            }
+
+            grid.innerHTML = products.map(p => {
+                let imgs = p.images? p.images.split(',') : []
+                let img = imgs[0]?.trim() || 'static/images/logo.png'
+                let price = p.sale_price || p.price
+                let oldPrice = p.sale_price && p.sale_price < p.price? `<del class="text-muted ms-2" style="font-size:13px">${p.price} ${p.currency}</del>` : ''
+                let badge = p.featured? `<span class="badge bg-warning text-dark mb-2">مميز</span>` : ''
+
+                return `
+                <div class="col-6 col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="${img}" alt="${p.name}" loading="lazy" class="card-img-top" style="height:180px;object-fit:cover" onerror="this.src='static/images/logo.png'">
+                        <div class="card-body p-2 d-flex flex-column">
+                            ${badge}
+                            <h6 class="card-title mb-1" style="font-size:14px; min-height:40px">${p.name}</h6>
+                            <p class="card-text mb-1" style="font-size:12px; min-height:35px">${p.description? p.description.substring(0,40)+'...' : ''}</p>
+                            <p class="fw-bold mb-2 mt-auto" style="font-size:14px; color:#ff512f">${price} ${p.currency} ${oldPrice}</p>
+                            <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm w-100">عرض المنتج</a>
+                        </div>
+                    </div>
+                </div>`
+            }).join('')
+
+        } catch (e) {
+            console.error(e)
+            document.getElementById('products-grid').innerHTML = `<div class="col-12"><div class="alert alert-danger">خطأ في تحميل المنتجات، الرجاء إعادة المحاولة لاحقا.</div></div>`
         }
+    }
 
-        // 2. الشبكة: كل المنتجات
-        const grid = document.getElementById('products-grid')
-        const allUrl = `${SUPABASE_URL}/rest/v1/products?select=*&order=id.desc&limit=6`
-        const allRes = await fetch(allUrl, { headers })
-        const products = await allRes.json()
+    function displayCarousel(products) {
+        const inner = document.getElementById('carousel-inner')
 
-        if (products.length === 0) {
-            grid.innerHTML = '<p class="text-center text-muted">لا توجد منتجات</p>'
-            return
-        }
-
-        grid.innerHTML = products.map(p => {
-            let imgs = p.images? p.images.split(',') : []
-            let img = imgs[0]?.trim() || 'static/images/logo.png'
+        inner.innerHTML = products.map((p, i) => {
+            let imgs = p.images? p.images.split(',').map(x => x.trim()).filter(x => x) : []
+            let img = imgs[0] || 'static/images/logo.png'
             let price = p.sale_price || p.price
-            let oldPrice = p.sale_price && p.sale_price < p.price? `<del class="text-muted ms-2" style="font-size:13px">${p.price} ${p.currency}</del>` : ''
-            let badge = p.featured? `<span class="badge bg-warning text-dark mb-2">مميز</span>` : ''
+            let hasDiscount = p.sale_price && p.sale_price < p.price
+            let discount = hasDiscount? Math.round((p.price - p.sale_price) / p.price * 100) : 0
+            let desc = p.description? (p.description.length > 120? p.description.substring(0,120) + '...' : p.description) : ''
 
             return `
-            <div class="col-6 col-md-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <img src="${img}" class="card-img-top" style="height:180px;object-fit:cover" onerror="this.src='static/images/logo.png'">
-                    <div class="card-body p-2 d-flex flex-column">
-                        ${badge}
-                        <h6 class="card-title mb-1" style="font-size:14px; min-height:40px">${p.name}</h6>
-                        <p class="card-text mb-1" style="font-size:12px; min-height:35px">${p.description? p.description.substring(0,40)+'...' : ''}</p>
-                        <p class="fw-bold mb-2 mt-auto" style="font-size:14px; color:#ff512f">${price} ${p.currency} ${oldPrice}</p>
-                        <a href="product_detail.html?id=${p.id}" class="btn btn-primary btn-sm w-100">عرض المنتج</a>
+            <div class="carousel-item ${i == 0? 'active' : ''}">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4 p-md-5 gap-4 gap-md-5" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff; min-height:350px;">
+                    <div class="text-center text-md-start mb-4 mb-md-0" style="flex:1">
+                        <h2 class="fw-bold mb-3">🔥 ${p.name}</h2>
+                        <p class="mb-3" style="font-size: 1.1rem; opacity:0.95">${desc}</p>
+                        <p class="fw-bold mb-3" style="font-size: 1.5rem;">
+                            ${p.currency || '$'}${price}
+                            ${hasDiscount? `<span class="text-decoration-line-through ms-2" style="opacity:0.7; font-size:1.1rem">${p.currency || '$'}${p.price}</span> <span class="badge bg-danger ms-2">${discount}% خصم</span>` : ''}
+                        </p>
+                        <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">
+                            🛒 تسوق الآن
+                        </a>
+                    </div>
+                    <div class="text-center ms-md-5 mt-4 mt-md-0" style="flex-shrink:0">
+                        <img src="${img}" alt="${p.name}" loading="lazy" class="img-fluid" style="max-height: 250px; border-radius: 12px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" onerror="this.src='static/images/logo.png'">
                     </div>
                 </div>
             </div>`
         }).join('')
-
-    } catch (e) {
-        console.error(e)
-        document.getElementById('products-grid').innerHTML = `<div class="col-12"><div class="alert alert-danger">خطأ في تحميل المنتجات، الرجاء إعادة المحاولة لاحقا.</div></div>`
     }
-}
 
-function displayCarousel(products) {
-    const inner = document.getElementById('carousel-inner')
+    // قائمة الموبايل
+    document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
+        document.querySelector('.navbar-nav')?.classList.toggle('active');
+    });
 
-    inner.innerHTML = products.map((p, i) => {
-        let imgs = p.images? p.images.split(',').map(x => x.trim()).filter(x => x) : []
-        let img = imgs[0] || 'static/images/logo.png'
-        let price = p.sale_price || p.price
-        let hasDiscount = p.sale_price && p.sale_price < p.price
-        let discount = hasDiscount? Math.round((p.price - p.sale_price) / p.price * 100) : 0
-        let desc = p.description? (p.description.length > 120? p.description.substring(0,120) + '...' : p.description) : ''
-
-        return `
-        <div class="carousel-item ${i == 0? 'active' : ''}">
-            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4 p-md-5 gap-4 gap-md-5" style="background: linear-gradient(135deg, #6a11cb, #2575fc); border-radius: 15px; color: #fff; min-height:350px;">
-                <div class="text-center text-md-start mb-4 mb-md-0" style="flex:1">
-                    <h2 class="fw-bold mb-3">🔥 ${p.name}</h2>
-                    <p class="mb-3" style="font-size: 1.1rem; opacity:0.95">${desc}</p>
-                    <p class="fw-bold mb-3" style="font-size: 1.5rem;">
-                        ${p.currency || '$'}${price}
-                        ${hasDiscount? `<span class="text-decoration-line-through ms-2" style="opacity:0.7; font-size:1.1rem">${p.currency || '$'}${p.price}</span> <span class="badge bg-danger ms-2">${discount}% خصم</span>` : ''}
-                    </p>
-                    <a href="product_detail.html?id=${p.id}" class="btn btn-light btn-lg fw-bold shadow" style="border-radius: 12px;">
-                        🛒 تسوق الآن
-                    </a>
-                </div>
-                <div class="text-center ms-md-5 mt-4 mt-md-0" style="flex-shrink:0">
-                    <img src="${img}" class="img-fluid" style="max-height: 250px; border-radius: 12px; box-shadow:0 10px 30px rgba(0,0,0,0.3);" onerror="this.src='static/images/logo.png'">
-                </div>
-            </div>
-        </div>`
-    }).join('')
-}
-
-// قائمة الموبايل
-document.querySelector('.navbar-toggle')?.addEventListener('click', function() {
-    document.querySelector('.navbar-nav')?.classList.toggle('active');
+    loadProducts();
 });
-
-
-loadProducts();
 </script>
 
 </body>
